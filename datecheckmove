@@ -1,0 +1,21 @@
+#variables
+$x1=(Get-Date).Month
+$x1-=1
+$x2=(Get-Date).Year
+$pathd="\\localhost\c$\" + $x1 + $x2
+$paths="c:\"
+
+#function to create folder
+Function create-folder {
+    new-item -Path $path -ItemType directory
+}
+
+#Check for folder existence
+If ($(get-item $pathd) -eq $null) {
+create-folder
+}
+
+#Move files that match month
+Foreach ($file in $(Get-ChildItem -path "path" | ?{$_.lastwritetime.month -eq $x1})) {
+move-item -path $paths -Destination $pathd
+}
